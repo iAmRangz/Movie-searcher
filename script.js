@@ -32,3 +32,25 @@ window.addEventListener('load', async () => {
     });
     moviesContainer.innerHTML = moviesHtml;
 });
+
+
+// Search movies
+async function searchMovies(query) {
+
+    const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
+
+    const response = await axios.get(searchUrl);
+    const movies = response.data.results;
+
+    let moviesHtml = '';
+    movies.forEach(movie => {
+        moviesHtml += getMovieHtml(movie);
+    });
+    moviesContainer.innerHTML = moviesHtml;
+}
+
+// Search event
+searchBtn.addEventListener('click', () => {
+    const searchQuery = searchInput.value;
+    searchMovies(searchQuery);
+});
