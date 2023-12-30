@@ -1,0 +1,49 @@
+body {
+    font-family: 'Garet Book', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #ede4ce;
+    color: #1d4960;
+    padding: 1rem;
+}
+
+h1 {
+    font-family: Garet;
+    margin: 0;
+}
+
+main {
+    max-width: 800px;
+    margin: 1rem auto;
+    padding: 1rem;
+    color: #1d4257;
+}
+
+.search {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.search input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-right: none;
+}
+
+.search button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #1d4257;
+    background-color: #1d4257;
+    color: #fff;
+    cursor: pointer;
+}
+
+#movies-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
