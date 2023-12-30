@@ -2,21 +2,24 @@ body {
     font-family: 'Garet Book', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: rgba(237, 228, 206, 0.2);
+
 }
 
 header {
-    background-color: #ede4ce;
+    background-color: rgba(237, 228, 206, 0.43);
     color: #1d4960;
     padding: 1rem;
 }
 
 h1 {
-    font-family: Garet;
+    font-family: Garet, sans-serif;
     margin: 0;
+    text-align: center;
 }
 
 main {
-    max-width: 800px;
+    max-width: 80rem;
     margin: 1rem auto;
     padding: 1rem;
     color: #1d4257;
@@ -47,3 +50,24 @@ main {
     flex-wrap: wrap;
 }
 
+.movie {
+    width: 300px;
+    margin: 0.5rem;
+    text-align: center;
+}
+
+.movie img {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+
+    .search input {
+        margin-bottom: 0.5rem;
+    }
+
+    .search {
+        flex-direction: column;
+    }
+
+}

@@ -20,3 +20,15 @@ function getMovieHtml(movie) {
   `;
 
 }
+
+// Get upcoming movies on load
+window.addEventListener('load', async () => {
+    const response = await axios.get(upcomingUrl);
+    const movies = response.data.results;
+
+    let moviesHtml = '';
+    movies.forEach(movie => {
+        moviesHtml += getMovieHtml(movie);
+    });
+    moviesContainer.innerHTML = moviesHtml;
+});
