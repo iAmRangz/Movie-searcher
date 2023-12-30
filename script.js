@@ -23,14 +23,21 @@ function getMovieHtml(movie) {
 
 // Get upcoming movies on load
 window.addEventListener('load', async () => {
-    const response = await axios.get(upcomingUrl);
-    const movies = response.data.results;
 
-    let moviesHtml = '';
-    movies.forEach(movie => {
-        moviesHtml += getMovieHtml(movie);
-    });
-    moviesContainer.innerHTML = moviesHtml;
+    try {
+        const response = await axios.get(upcomingUrl);
+        const movies = response.data.results;
+
+        let moviesHtml = '';
+        movies.forEach(movie => {
+            moviesHtml += getMovieHtml(movie);
+        });
+        moviesContainer.innerHTML = moviesHtml;
+
+    } catch (error) {
+        console.log(error);
+    }
+
 });
 
 
@@ -39,14 +46,19 @@ async function searchMovies(query) {
 
     const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
 
-    const response = await axios.get(searchUrl);
-    const movies = response.data.results;
+    try {
+        const response = await axios.get(searchUrl);
+        const movies = response.data.results;
 
-    let moviesHtml = '';
-    movies.forEach(movie => {
-        moviesHtml += getMovieHtml(movie);
-    });
-    moviesContainer.innerHTML = moviesHtml;
+        let moviesHtml = '';
+        movies.forEach(movie => {
+            moviesHtml += getMovieHtml(movie);
+        });
+        moviesContainer.innerHTML = moviesHtml;
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // Search event
