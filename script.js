@@ -71,11 +71,16 @@ searchBtn.addEventListener('click', () => {
 });
 
 
+// Modify the displayDetails function
 function displayDetails(movie) {
     axios
-        .get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`)
-        .then(response => {
-            const movieDetails = response.data;
+        .all([
+            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`),
+            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`)
+        ])
+        .then(axios.spread((movieResponse, creditsResponse) => {
+            const movieDetails = movieResponse.data;
+            const credits = creditsResponse.data;
 
             const overlay = document.getElementById('overlay');
             overlay.innerHTML = ''; // Clear previous details
@@ -90,20 +95,30 @@ function displayDetails(movie) {
                 overlay.classList.remove('active');
             });
 
+            const director = credits.crew.find(member => member.job === 'Director');
+            const directorName = director ? director.name : 'N/A';
+
+            const genres = movieDetails.genres.map(genre => genre.name).join(', ');
+            const cast = credits.cast.slice(0, 5).map(actor => actor.name).join(', ');
+
             detailsDiv.innerHTML = `
                 <h2>${movieDetails.title}</h2>
                 <img src="http://image.tmdb.org/t/p/w300/${movieDetails.poster_path}" alt="${movieDetails.title}">
                 <p>Release Date: ${movieDetails.release_date}</p>
+                <p>Director: ${directorName}</p>
+                <p>Genres: ${genres}</p>
+                <p>Cast: ${cast}</p>
                 <p>Overview: ${movieDetails.overview}</p>
             `;
 
             detailsDiv.appendChild(closeButton);
             overlay.appendChild(detailsDiv);
-        })
+        }))
         .catch(error => {
             console.log(error);
         });
 }
+
 
 
 moviesContainer.addEventListener('dblclick', event => {
