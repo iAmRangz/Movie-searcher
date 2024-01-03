@@ -77,15 +77,17 @@ function displayDetails(movie) {
         .then(response => {
             const movieDetails = response.data;
 
+            const overlay = document.getElementById('overlay');
+            overlay.classList.add('active');
+
             const detailsDiv = document.createElement('div');
-            detailsDiv.classList.add('details');
+            detailsDiv.classList.add('overlay-content');
 
             const closeButton = document.createElement('button');
             closeButton.textContent = 'Close';
             closeButton.addEventListener('click', () => {
-                document.body.removeChild(detailsDiv);
+                overlay.classList.remove('active');
             });
-
 
             detailsDiv.innerHTML = `
                 <h2>${movieDetails.title}</h2>
@@ -95,9 +97,7 @@ function displayDetails(movie) {
             `;
 
             detailsDiv.appendChild(closeButton);
-
-
-            document.body.appendChild(detailsDiv);
+            overlay.appendChild(detailsDiv);
         })
         .catch(error => {
             console.log(error);
