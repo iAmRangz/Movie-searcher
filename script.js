@@ -11,14 +11,17 @@ const moviesContainer = document.getElementById('movies-container');
 
 // Build movie HTML
 function getMovieHtml(movie) {
-
     return `
-    <div class="movie">
-      <img src="http://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title}">
-      <h3>${movie.title}</h3>
-    </div>
-  `;
-
+        <div class="movie" 
+             data-id="${movie.id}"
+             data-title="${movie.title}"
+             data-poster-path="${movie.poster_path}"
+             data-release-date="${movie.release_date}"
+             data-overview="${movie.overview}">
+            <img src="http://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title}">
+            <h3>${movie.title}</h3>
+        </div>
+    `;
 }
 
 // Get upcoming movies on load
@@ -66,3 +69,5 @@ searchBtn.addEventListener('click', () => {
     const searchQuery = searchInput.value;
     searchMovies(searchQuery);
 });
+
+
