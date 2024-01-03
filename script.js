@@ -78,6 +78,7 @@ function displayDetails(movie) {
             const movieDetails = response.data;
 
             const overlay = document.getElementById('overlay');
+            overlay.innerHTML = ''; // Clear previous details
             overlay.classList.add('active');
 
             const detailsDiv = document.createElement('div');
@@ -91,7 +92,7 @@ function displayDetails(movie) {
 
             detailsDiv.innerHTML = `
                 <h2>${movieDetails.title}</h2>
-                <img src="http://image.tmdb.org/t/p/w500/${movieDetails.poster_path}" alt="${movieDetails.title}">
+                <img src="http://image.tmdb.org/t/p/w300/${movieDetails.poster_path}" alt="${movieDetails.title}">
                 <p>Release Date: ${movieDetails.release_date}</p>
                 <p>Overview: ${movieDetails.overview}</p>
             `;
