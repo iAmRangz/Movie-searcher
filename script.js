@@ -71,3 +71,50 @@ searchBtn.addEventListener('click', () => {
 });
 
 
+function displayDetails(movie) {
+    axios
+        .get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`)
+        .then(response => {
+            const movieDetails = response.data;
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.classList.add('details');
+
+            const closeButton = document.createElement('button');
+            closeButton.textContent = 'Close';
+            closeButton.addEventListener('click', () => {
+                document.body.removeChild(detailsDiv);
+            });
+
+
+            detailsDiv.innerHTML = `
+                <h2>${movieDetails.title}</h2>
+                <img src="http://image.tmdb.org/t/p/w500/${movieDetails.poster_path}" alt="${movieDetails.title}">
+                <p>Release Date: ${movieDetails.release_date}</p>
+                <p>Overview: ${movieDetails.overview}</p>
+            `;
+
+            detailsDiv.appendChild(closeButton);
+
+
+            document.body.appendChild(detailsDiv);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+
+moviesContainer.addEventListener('dblclick', event => {
+    const movieElement = event.target.closest('.movie');
+    if (movieElement) {
+        const movieData = {
+            id: movieElement.getAttribute('data-id'),
+            title: movieElement.getAttribute('data-title'),
+            poster_path: movieElement.getAttribute('data-poster-path'),
+            release_date: movieElement.getAttribute('data-release-date'),
+            overview: movieElement.getAttribute('data-overview')
+        };
+        displayDetails(movieData);
+    }
+});
