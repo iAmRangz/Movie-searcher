@@ -83,6 +83,9 @@ nextPageBtn.addEventListener('click', navigateToNextPage);
 
 
 function displayDetails(movie) {
+    const moviePoster = document.querySelector(`.movie[data-id="${movie.id}"] img`);
+    moviePoster.style.display = 'none'; // Hide poster when overlay is activated
+
     axios
         .all([
             axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`),
@@ -152,6 +155,9 @@ function displayDetails(movie) {
         }))
         .catch(error => {
             console.log(error);
+        })
+        .finally(() => {
+            moviePoster.style.display = 'block'; // Revert display when overlay is closed
         });
 }
 

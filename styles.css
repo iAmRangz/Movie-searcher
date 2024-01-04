@@ -69,6 +69,10 @@ main {
     border-radius: 20px;
 }
 
+.movie img:hover, .similar-movie img:hover {
+    transform: scale(1.05);
+}
+
 .overlay {
     display: none;
     position: fixed;
