@@ -4,10 +4,9 @@ const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const prevPageBtn = document.getElementById('prev-page');
 const nextPageBtn = document.getElementById('next-page');
-
 let pageNumber = 1;
 
-const getMovieHtml = (movie) => `
+const createMovieElement = (movie) => `
     <div class="movie" 
          data-id="${movie.id}"
          data-title="${movie.title}"
@@ -24,11 +23,11 @@ const fetchMovies = async (page) => {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${page}`);
         const movies = response.data.results;
 
-        const moviesHtml = movies.map(getMovieHtml).join('');
+        const moviesHtml = movies.map(createMovieElement).join('');
         moviesContainer.innerHTML = moviesHtml;
 
     } catch (error) {
-        console.log(error);
+        console.error('Error fetching movies:', error);
     }
 };
 
@@ -37,11 +36,11 @@ const searchMovies = async (query) => {
         const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`);
         const movies = response.data.results;
 
-        const moviesHtml = movies.map(getMovieHtml).join('');
+        const moviesHtml = movies.map(createMovieElement).join('');
         moviesContainer.innerHTML = moviesHtml;
 
     } catch (error) {
-        console.log(error);
+        console.error('Error searching movies:', error);
     }
 };
 
@@ -57,15 +56,33 @@ const navigateToPrevPage = () => {
     }
 };
 
+const hideMoviePoster = (movieId) => {
+    const moviePoster = document.querySelector(`.movie[data-id="${movieId}"] img`);
+    if (moviePoster) {
+        moviePoster.style.display = 'none';
+    }
+};
+
+const displayMoviePoster = (movieId) => {
+    const moviePoster = document.querySelector(`.movie[data-id="${movieId}"] img`);
+    if (moviePoster) {
+        moviePoster.style.display = 'block';
+    }
+};
+
 const displayDetails = async (movie) => {
-    const moviePoster = document.querySelector(`.movie[data-id="${movie.id}"] img`);
-    moviePoster.style.display = 'none'; // Hide poster when overlay is activated
+    const movieId = movie.id;
+    hideMoviePoster(movieId);
 
     try {
-        const [movieResponse, creditsResponse, similarResponse] = await Promise.all([
-            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`),
-            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`),
-            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/similar?api_key=${apiKey}&language=en-US`)
+        const [
+            movieResponse,
+            creditsResponse,
+            similarResponse
+        ] = await Promise.all([
+            axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`),
+            axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`),
+            axios.get(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}&language=en-US`)
         ]);
 
         const movieDetails = movieResponse.data;
@@ -128,9 +145,9 @@ const displayDetails = async (movie) => {
 
         overlay.appendChild(detailsDiv);
     } catch (error) {
-        console.log(error);
+        console.error('Error displaying details:', error);
     } finally {
-        moviePoster.style.display = 'block'; // Revert display when overlay is closed
+        displayMoviePoster(movieId);
     }
 };
 
@@ -146,7 +163,7 @@ searchBtn.addEventListener('click', () => {
 prevPageBtn.addEventListener('click', navigateToPrevPage);
 nextPageBtn.addEventListener('click', navigateToNextPage);
 
-moviesContainer.addEventListener('dblclick', event => {
+moviesContainer.addEventListener('dblclick', (event) => {
     const movieElement = event.target.closest('.movie');
     if (movieElement) {
         const movieData = {
