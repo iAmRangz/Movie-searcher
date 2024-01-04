@@ -31,17 +31,26 @@ main {
 
 .search input {
     flex-grow: 1;
-    padding: 0.5rem;
+    padding: 0.7rem;
     border: 1px solid #ccc;
     border-right: none;
+    border-radius: 4px;
+    font-size: 1rem;
 }
 
 .search button {
-    padding: 0.5rem 1rem;
+    padding: 0.7rem 1rem;
     border: 1px solid #1d4257;
     background-color: #1d4257;
     color: #fff;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.search button:hover {
+    background-color: #145175;
 }
 
 #movies-container {
@@ -159,6 +168,28 @@ main {
     width: 100%;
     height: auto;
     border-radius: 5px;
+}
+
+.page-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.page-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #1d4257;
+    background-color: #1d4257;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.page-btn:hover {
+    background-color: #145175;
 }
 
 @media (max-width: 600px) {
