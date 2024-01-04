@@ -9,7 +9,6 @@ const searchBtn = document.getElementById('search-btn');
 const moviesContainer = document.getElementById('movies-container');
 
 
-// Build movie HTML
 function getMovieHtml(movie) {
     return `
         <div class="movie" 
@@ -43,8 +42,6 @@ window.addEventListener('load', async () => {
 
 });
 
-
-// Search movies
 async function searchMovies(query) {
 
     const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
@@ -71,16 +68,17 @@ searchBtn.addEventListener('click', () => {
 });
 
 
-// Modify the displayDetails function
 function displayDetails(movie) {
     axios
         .all([
             axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`),
-            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`)
+            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`),
+            axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/similar?api_key=${apiKey}&language=en-US`)
         ])
-        .then(axios.spread((movieResponse, creditsResponse) => {
+        .then(axios.spread((movieResponse, creditsResponse, similarResponse) => {
             const movieDetails = movieResponse.data;
             const credits = creditsResponse.data;
+            const similarMovies = similarResponse.data.results;
 
             const overlay = document.getElementById('overlay');
             overlay.innerHTML = ''; // Clear previous details
@@ -97,28 +95,51 @@ function displayDetails(movie) {
 
             const director = credits.crew.find(member => member.job === 'Director');
             const directorName = director ? director.name : 'N/A';
-
             const genres = movieDetails.genres.map(genre => genre.name).join(', ');
             const cast = credits.cast.slice(0, 5).map(actor => actor.name).join(', ');
 
             detailsDiv.innerHTML = `
-                <h2>${movieDetails.title}</h2>
+        <h2>${movieDetails.title}</h2>
+        <div class="details-container">
+            <div class="movie-details">
+                <p><b>Release Date:</b> ${movieDetails.release_date}</p>
+                <p><b>Director:</b> ${directorName}</p>
+                <p><b>Genres:</b> ${genres}</p>
+                <p><b>Cast:</b> ${cast}</p>
+                <p><b>Overview:</b> ${movieDetails.overview}</p>
+            </div>
+            <div class="movie-poster">
                 <img src="http://image.tmdb.org/t/p/w300/${movieDetails.poster_path}" alt="${movieDetails.title}">
-                <p>Release Date: ${movieDetails.release_date}</p>
-                <p>Director: ${directorName}</p>
-                <p>Genres: ${genres}</p>
-                <p>Cast: ${cast}</p>
-                <p>Overview: ${movieDetails.overview}</p>
-            `;
+            </div>
+        </div>
+    `;
 
             detailsDiv.appendChild(closeButton);
+
+            // Div for similar movies
+            const similarMoviesDiv = document.createElement('div');
+            similarMoviesDiv.classList.add('similar-movies');
+
+            let similarMoviesHtml = '<h3>Similar Movies:</h3><div class="similar-movies-container">';
+            similarMovies.forEach(similarMovie => {
+                similarMoviesHtml += `
+                    <div class="similar-movie">
+                        <img src="http://image.tmdb.org/t/p/w200/${similarMovie.poster_path}" alt="${similarMovie.title}">
+                        <h4>${similarMovie.title}</h4>
+                    </div>
+                `;
+            });
+            similarMoviesHtml += '</div>';
+
+            similarMoviesDiv.innerHTML = similarMoviesHtml;
+            detailsDiv.appendChild(similarMoviesDiv);
+
             overlay.appendChild(detailsDiv);
         }))
         .catch(error => {
             console.log(error);
         });
 }
-
 
 
 moviesContainer.addEventListener('dblclick', event => {
