@@ -1,13 +1,11 @@
-// Fixed page number for now.
 let pageNumber = 1;
 const apiKey = '1bfdbff05c2698dc917dd28c08d41096';
-
-const upcomingUrl = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${pageNumber}`;
 
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const moviesContainer = document.getElementById('movies-container');
-
+const prevPageBtn = document.getElementById('prev-page');
+const nextPageBtn = document.getElementById('next-page');
 
 function getMovieHtml(movie) {
     return `
@@ -23,11 +21,11 @@ function getMovieHtml(movie) {
     `;
 }
 
-// Get upcoming movies on load
-window.addEventListener('load', async () => {
+async function fetchMovies(page) {
+    const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${page}`;
 
     try {
-        const response = await axios.get(upcomingUrl);
+        const response = await axios.get(url);
         const movies = response.data.results;
 
         let moviesHtml = '';
@@ -39,11 +37,13 @@ window.addEventListener('load', async () => {
     } catch (error) {
         console.log(error);
     }
+}
 
+window.addEventListener('load', async () => {
+    fetchMovies(pageNumber);
 });
 
 async function searchMovies(query) {
-
     const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
 
     try {
@@ -61,11 +61,25 @@ async function searchMovies(query) {
     }
 }
 
-// Search event
 searchBtn.addEventListener('click', () => {
     const searchQuery = searchInput.value;
     searchMovies(searchQuery);
 });
+
+function navigateToNextPage() {
+    pageNumber++;
+    fetchMovies(pageNumber);
+}
+
+function navigateToPrevPage() {
+    if (pageNumber > 1) {
+        pageNumber--;
+        fetchMovies(pageNumber);
+    }
+}
+
+prevPageBtn.addEventListener('click', navigateToPrevPage);
+nextPageBtn.addEventListener('click', navigateToNextPage);
 
 
 function displayDetails(movie) {
