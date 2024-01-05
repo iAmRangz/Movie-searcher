@@ -23,8 +23,7 @@ const fetchMovies = async (page) => {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${page}`);
         const movies = response.data.results;
 
-        const moviesHtml = movies.map(createMovieElement).join('');
-        moviesContainer.innerHTML = moviesHtml;
+        moviesContainer.innerHTML = movies.map(createMovieElement).join('');
 
     } catch (error) {
         console.error('Error fetching movies:', error);
@@ -36,8 +35,7 @@ const searchMovies = async (query) => {
         const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`);
         const movies = response.data.results;
 
-        const moviesHtml = movies.map(createMovieElement).join('');
-        moviesContainer.innerHTML = moviesHtml;
+        moviesContainer.innerHTML = movies.map(createMovieElement).join('');
 
     } catch (error) {
         console.error('Error searching movies:', error);
@@ -68,6 +66,17 @@ const displayMoviePoster = (movieId) => {
     if (moviePoster) {
         moviePoster.style.display = 'block';
     }
+};
+
+const displaySimilarMovieDetails = async (similarMovie) => {
+    const movieData = {
+        id: similarMovie.id,
+        title: similarMovie.title,
+        poster_path: similarMovie.poster_path,
+        release_date: similarMovie.release_date,
+        overview: similarMovie.overview
+    };
+    displayDetails(movieData);
 };
 
 const displayDetails = async (movie) => {
@@ -132,22 +141,45 @@ const displayDetails = async (movie) => {
         let similarMoviesHtml = '<h3>Similar Movies:</h3><div class="similar-movies-container">';
         similarMovies.forEach(similarMovie => {
             similarMoviesHtml += `
-                <div class="similar-movie">
+                <div class="similar-movie" data-id="${similarMovie.id}">
                     <img src="http://image.tmdb.org/t/p/w200/${similarMovie.poster_path}" alt="${similarMovie.title}">
                     <h4>${similarMovie.title}</h4>
                 </div>
             `;
         });
-        similarMoviesHtml += '</div>';
 
+        similarMoviesHtml += '</div>';
         similarMoviesDiv.innerHTML = similarMoviesHtml;
         detailsDiv.appendChild(similarMoviesDiv);
-
         overlay.appendChild(detailsDiv);
+
+        attachSimilarMoviesClickListener(similarMovies);
+
     } catch (error) {
         console.error('Error displaying details:', error);
     } finally {
         displayMoviePoster(movieId);
+    }
+};
+
+const attachSimilarMoviesClickListener = (similarMovies) => {
+    const detailsDiv = document.querySelector('.overlay-content');
+
+    if (detailsDiv) {
+        const similarMoviesDiv = detailsDiv.querySelector('.similar-movies');
+
+        if (similarMoviesDiv) {
+            similarMoviesDiv.addEventListener('click', (event) => {
+                const similarMovieElement = event.target.closest('.similar-movie');
+                if (similarMovieElement) {
+                    const similarMovieId = parseInt(similarMovieElement.getAttribute('data-id'));
+                    const selectedSimilarMovie = similarMovies.find(movie => movie.id === similarMovieId);
+                    if (selectedSimilarMovie) {
+                        displaySimilarMovieDetails(selectedSimilarMovie);
+                    }
+                }
+            });
+        }
     }
 };
 
