@@ -6,17 +6,20 @@ const prevPageBtn = document.getElementById('prev-page');
 const nextPageBtn = document.getElementById('next-page');
 let pageNumber = 1;
 
-const createMovieElement = (movie) => `
-    <div class="movie" 
-         data-id="${movie.id}"
-         data-title="${movie.title}"
-         data-poster-path="${movie.poster_path}"
-         data-release-date="${movie.release_date}"
-         data-overview="${movie.overview}">
-        <img src="http://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title}">
-        <h3>${movie.title}</h3>
-    </div>
-`;
+const createMovieElement = (movie) => {
+    const {id, title, poster_path, release_date, overview} = movie;
+    return `
+        <div class="movie" 
+             data-id="${id}"
+             data-title="${title}"
+             data-poster-path="${poster_path}"
+             data-release-date="${release_date}"
+             data-overview="${overview}">
+            <img src="http://image.tmdb.org/t/p/w500/${poster_path}" alt="${title}">
+            <h3>${title}</h3>
+        </div>
+    `;
+};
 
 const fetchMovies = async (page) => {
     try {
@@ -134,23 +137,9 @@ const displayDetails = async (movie) => {
 
         detailsDiv.appendChild(closeButton);
 
-        // Div for similar movies
-        const similarMoviesDiv = document.createElement('div');
-        similarMoviesDiv.classList.add('similar-movies');
-
-        let similarMoviesHtml = '<h3>Similar Movies:</h3><div class="similar-movies-container">';
-        similarMovies.forEach(similarMovie => {
-            similarMoviesHtml += `
-                <div class="similar-movie" data-id="${similarMovie.id}">
-                    <img src="http://image.tmdb.org/t/p/w200/${similarMovie.poster_path}" alt="${similarMovie.title}">
-                    <h4>${similarMovie.title}</h4>
-                </div>
-            `;
-        });
-
-        similarMoviesHtml += '</div>';
-        similarMoviesDiv.innerHTML = similarMoviesHtml;
+        const similarMoviesDiv = createSimilarMoviesDiv(similarMovies);
         detailsDiv.appendChild(similarMoviesDiv);
+
         overlay.appendChild(detailsDiv);
 
         attachSimilarMoviesClickListener(similarMovies);
@@ -161,6 +150,27 @@ const displayDetails = async (movie) => {
         displayMoviePoster(movieId);
     }
 };
+
+const createSimilarMoviesDiv = (similarMovies) => {
+    const similarMoviesDiv = document.createElement('div');
+    similarMoviesDiv.classList.add('similar-movies');
+
+    let similarMoviesHtml = '<h3>Similar Movies:</h3><div class="similar-movies-container">';
+    similarMovies.forEach(similarMovie => {
+        similarMoviesHtml += `
+            <div class="similar-movie" data-id="${similarMovie.id}">
+                <img src="http://image.tmdb.org/t/p/w200/${similarMovie.poster_path}" alt="${similarMovie.title}">
+                <h4>${similarMovie.title}</h4>
+            </div>
+        `;
+    });
+
+    similarMoviesHtml += '</div>';
+    similarMoviesDiv.innerHTML = similarMoviesHtml;
+
+    return similarMoviesDiv;
+};
+
 
 const attachSimilarMoviesClickListener = (similarMovies) => {
     const detailsDiv = document.querySelector('.overlay-content');
