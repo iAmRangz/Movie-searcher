@@ -167,8 +167,8 @@ const createSimilarMoviesDiv = (similarMovies) => {
     similarMovies.forEach(similarMovie => {
         similarMoviesHtml += `
             <div class="similar-movie" data-id="${similarMovie.id}">
-                <img src="http://image.tmdb.org/t/p/w200/${similarMovie.poster_path}" alt="${similarMovie.title}">
                 <h4>${similarMovie.title}</h4>
+                <img src="http://image.tmdb.org/t/p/w200/${similarMovie.poster_path}" alt="${similarMovie.title}">
             </div>
         `;
     });
@@ -205,8 +205,19 @@ const attachSimilarMoviesClickListener = (similarMovies) => {
     });
 };
 
+// Function to handle search by Enter key press
+const handleSearchByEnter = (event) => {
+    if (event.key === 'Enter') {
+        const searchQuery = searchInput.value;
+        searchMovies(searchQuery);
+    }
+};
+
 window.addEventListener('load', () => {
     fetchMovies(pageNumber);
+
+    // Event listener for "Enter" key press in search input
+    searchInput.addEventListener('keypress', handleSearchByEnter);
 });
 
 searchBtn.addEventListener('click', () => {

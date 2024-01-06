@@ -1,7 +1,6 @@
-/* General Body Styles */
 body {
     font-family: 'Garet Book', sans-serif;
-    margin: 0;
+    margin: 0; /
     padding: 0;
     background-color: rgba(237, 228, 206, 0.2);
 }
@@ -18,27 +17,28 @@ h1 {
     font-family: Garet, sans-serif;
     margin: 0;
     text-align: center;
+    cursor: pointer;
 }
 
 /* Main Content Styles */
 main {
     max-width: 80rem;
-    margin: 1rem auto;
-    padding: 1rem;
+    margin: 1rem auto; /* margin around the main content */
+    padding: 1rem; /* padding inside the main content */
     color: #1d4257;
 }
 
 /* Search Box Styles */
 .search {
-    display: flex;
-    margin-bottom: 1rem;
+    display: flex; /* Makes the search box a flex container */
+    margin-bottom: 1rem; /* Adds space between the search box and other content */
 }
 
 .search input {
-    flex-grow: 1;
+    flex-grow: 1; /* Allows input to grow within its container */
     padding: 0.7rem;
     border: 1px solid #ccc;
-    border-right: none;
+    border-right: none; /* Removes right border to separate input and button */
     border-radius: 4px;
     font-size: 1rem;
 }
@@ -61,33 +61,31 @@ main {
 /* Movies Container Styles */
 #movies-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allows movies to wrap into multiple lines */
 }
 
 /* Individual Movie Styles */
 .movie {
-    width: 300px;
+    width: 300px; /* fixed width for each movie */
     margin: 0.5rem;
     text-align: center;
 }
 
 .movie img {
-    width: 100%;
+    width: 100%; /* Makes the image responsive within its container */
     border-radius: 20px;
 }
 
-/* Movie Image Hover Effect */
-.movie img:hover,
-.similar-movie img:hover {
-    transform: scale(1.05);
+.movie img:hover, .similar-movie img:hover {
+    transform: scale(1.05); /* Enlarges the image on hover */
 }
 
 /* Overlay Styles */
 .overlay {
-    display: none;
+    display: none; /* Hides the overlay content by default */
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; /* Aligns the overlay to the top */
+    left: 0; /* Aligns the overlay to the left */
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
@@ -96,19 +94,20 @@ main {
 }
 
 .overlay.active {
-    display: flex;
+    display: flex; /* Displays the overlay content when active */
 }
 
+/* Overlay Content Styles */
 .overlay-content {
     background-color: white;
     padding: 20px;
     max-width: 60%;
     max-height: 55%;
-    overflow-y: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    overflow-y: auto; /* Adds a vertical scrollbar when content exceeds height */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
+    display: flex; /* Specifies a flex display for the content */
+    flex-direction: column; /* Arranges content in a column */
+    align-items: flex-start; /* Aligns content to the start of the container */
 }
 
 .overlay-content h2 {
@@ -119,8 +118,8 @@ main {
 .overlay-content img {
     display: block;
     margin-bottom: 10px;
-    max-width: 100%;
-    height: auto;
+    max-width: 100%; /* Ensures images don't exceed their container width */
+    height: auto; /* Maintains image aspect ratio */
 }
 
 .overlay-content p {
@@ -130,7 +129,7 @@ main {
 
 .overlay-content button {
     display: block;
-    margin: 0 auto;
+    margin: 0 auto; /* Centers buttons horizontally */
     padding: 8px 16px;
     background-color: #1d4257;
     color: white;
@@ -148,20 +147,19 @@ main {
     margin-bottom: 20px;
 }
 
-/* Movie Details Styles */
 .movie-details {
-    flex: 1;
+    flex: 1; /* Allows movie details to grow within the container */
 }
 
 /* Movie Poster Styles */
 .movie-poster {
-    flex: 1;
+    flex: 1; /* Allows movie posters to grow within the container */
     max-width: 250px;
 }
 
 .movie-poster img {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Makes the image responsive within its container */
+    height: auto; /* Maintains image aspect ratio */
     border-radius: 10px;
 }
 
@@ -172,19 +170,19 @@ main {
 
 .similar-movies-container {
     display: flex;
-    overflow-x: auto;
-    gap: 10px;
+    overflow-x: auto; /* Adds horizontal scrolling for overflowed content */
+    gap: 10px; /* Adds space between similar movie elements */
 }
 
 .similar-movie {
-    flex: 0 0 auto;
+    flex: 0 0 auto; /* Specifies no flexibility for similar movie elements */
     max-width: 200px;
     text-align: center;
 }
 
 .similar-movie img {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Makes the image responsive within its container */
+    height: auto; /* Maintains image aspect ratio */
     border-radius: 5px;
 }
 
@@ -203,7 +201,7 @@ main {
     color: #fff;
     cursor: pointer;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 1rem; /
     transition: background-color 0.3s ease;
 }
 
@@ -214,10 +212,10 @@ main {
 /* Responsive Styles for Small Screens */
 @media (max-width: 600px) {
     .search input {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.5rem; /* Adds margin at the bottom of search input on small screens */
     }
 
     .search {
-        flex-direction: column;
+        flex-direction: column; /* Changes flex direction to column for search box on small screens */
     }
 }
