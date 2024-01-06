@@ -6,6 +6,7 @@ const prevPageBtn = document.getElementById('prev-page');
 const nextPageBtn = document.getElementById('next-page');
 let pageNumber = 1;
 
+// Function to create a movie element HTML
 const createMovieElement = (movie) => {
     const {id, title, poster_path, release_date, overview} = movie;
     return `
@@ -21,6 +22,7 @@ const createMovieElement = (movie) => {
     `;
 };
 
+// Fetches movies based on the provided page number
 const fetchMovies = async (page) => {
     try {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=${page}`);
@@ -87,6 +89,7 @@ const displayDetails = async (movie) => {
     hideMoviePoster(movieId);
 
     try {
+        // Fetching movie details, credits, and similar movies in parallel
         const [
             movieResponse,
             creditsResponse,
@@ -101,6 +104,7 @@ const displayDetails = async (movie) => {
         const credits = creditsResponse.data;
         const similarMovies = similarResponse.data.results;
 
+        // Creating and populating the overlay
         const overlay = document.getElementById('overlay');
         overlay.innerHTML = ''; // Clear previous details
         overlay.classList.add('active');
@@ -114,11 +118,13 @@ const displayDetails = async (movie) => {
             overlay.classList.remove('active');
         });
 
+        // Extracting director, genres, and cast information
         const director = credits.crew.find(member => member.job === 'Director');
         const directorName = director ? director.name : 'N/A';
         const genres = movieDetails.genres.map(genre => genre.name).join(', ');
         const cast = credits.cast.slice(0, 5).map(actor => actor.name).join(', ');
 
+        // Populating the details section of the overlay
         detailsDiv.innerHTML = `
             <h2>${movieDetails.title}</h2>
             <div class="details-container">
@@ -137,6 +143,7 @@ const displayDetails = async (movie) => {
 
         detailsDiv.appendChild(closeButton);
 
+        // Creating and appending the similar movies section to the overlay
         const similarMoviesDiv = createSimilarMoviesDiv(similarMovies);
         detailsDiv.appendChild(similarMoviesDiv);
 
@@ -151,6 +158,7 @@ const displayDetails = async (movie) => {
     }
 };
 
+// Function to create the HTML structure for similar movies section
 const createSimilarMoviesDiv = (similarMovies) => {
     const similarMoviesDiv = document.createElement('div');
     similarMoviesDiv.classList.add('similar-movies');
@@ -172,25 +180,29 @@ const createSimilarMoviesDiv = (similarMovies) => {
 };
 
 
-const attachSimilarMoviesClickListener = (similarMovies) => {
-    const detailsDiv = document.querySelector('.overlay-content');
-
-    if (detailsDiv) {
-        const similarMoviesDiv = detailsDiv.querySelector('.similar-movies');
-
-        if (similarMoviesDiv) {
-            similarMoviesDiv.addEventListener('click', (event) => {
-                const similarMovieElement = event.target.closest('.similar-movie');
-                if (similarMovieElement) {
-                    const similarMovieId = parseInt(similarMovieElement.getAttribute('data-id'));
-                    const selectedSimilarMovie = similarMovies.find(movie => movie.id === similarMovieId);
-                    if (selectedSimilarMovie) {
-                        displaySimilarMovieDetails(selectedSimilarMovie);
-                    }
-                }
-            });
+// Function to handle similar movie click
+const handleSimilarMovieClick = (event, similarMovies) => {
+    const similarMovieElement = event.target.closest('.similar-movie');
+    if (similarMovieElement) {
+        const similarMovieId = parseInt(similarMovieElement.getAttribute('data-id'));
+        const selectedSimilarMovie = similarMovies.find(movie => movie.id === similarMovieId);
+        if (selectedSimilarMovie) {
+            displaySimilarMovieDetails(selectedSimilarMovie);
         }
     }
+};
+
+// Function to attach similar movies click event
+const attachSimilarMoviesClickListener = (similarMovies) => {
+    const overlay = document.getElementById('overlay');
+
+    overlay.addEventListener('click', (event) => {
+        const similarMoviesDiv = document.querySelector('.similar-movies');
+
+        if (similarMoviesDiv && event.target.closest('.similar-movies')) {
+            handleSimilarMovieClick(event, similarMovies);
+        }
+    });
 };
 
 window.addEventListener('load', () => {
