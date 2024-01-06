@@ -234,3 +234,9 @@ document.getElementById('sort-options').addEventListener('change', (event) => {
         sortMovies(selectedCriterion);
     }
 });
+
+
+document.getElementById('title').addEventListener('click', () => {
+    pageNumber = 1;
+    fetchMovies(pageNumber);
+});
