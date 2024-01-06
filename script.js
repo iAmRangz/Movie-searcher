@@ -208,3 +208,29 @@ moviesContainer.addEventListener('dblclick', (event) => {
         displayDetails(movieData);
     }
 });
+
+const sortMovies = (criterion) => {
+    const movies = Array.from(document.querySelectorAll('.movie'));
+    movies.sort((a, b) => {
+        const valueA = a.getAttribute(`data-${criterion}`);
+        const valueB = b.getAttribute(`data-${criterion}`);
+        if (criterion === 'release-date') {
+            return new Date(valueB) - new Date(valueA);
+        } else if (criterion === 'title') {
+            return valueA.localeCompare(valueB);
+        }
+    });
+    moviesContainer.innerHTML = '';
+    movies.forEach((movie) => {
+        moviesContainer.appendChild(movie);
+    });
+};
+
+document.getElementById('sort-options').addEventListener('change', (event) => {
+    const selectedCriterion = event.target.value;
+    if (selectedCriterion === 'default') {
+        fetchMovies(pageNumber)
+    } else {
+        sortMovies(selectedCriterion);
+    }
+});

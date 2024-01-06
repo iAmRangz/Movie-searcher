@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Searcher ni Rangz</title>
     <link rel="stylesheet" href="styles.css">
-
 </head>
 
 <body>
@@ -16,10 +15,18 @@
 </header>
 
 <main>
-
     <div class="search">
         <input type="text" id="search-input" placeholder="Search movies...">
         <button id="search-btn">Search</button>
+    </div>
+
+    <div class="sort-dropdown">
+        <label for="sort-options">Sort By:</label>
+        <select id="sort-options">
+            <option value="default">Default</option>
+            <option value="release-date">Release Date</option>
+            <option value="title">Title</option>
+        </select>
     </div>
 
     <h2>Upcoming Movies</h2>
@@ -33,7 +40,6 @@
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="script.js"></script>
-
 </body>
 
 </html>
