@@ -1,3 +1,4 @@
+/* General Body Styles */
 body {
     font-family: 'Garet Book', sans-serif;
     margin: 0;
@@ -5,18 +6,21 @@ body {
     background-color: rgba(237, 228, 206, 0.2);
 }
 
+/* Header Styles */
 header {
     background-color: rgba(237, 228, 206, 0.43);
     color: #1d4960;
     padding: 1rem;
 }
 
+/* Page Title Style */
 h1 {
     font-family: Garet, sans-serif;
     margin: 0;
     text-align: center;
 }
 
+/* Main Content Styles */
 main {
     max-width: 80rem;
     margin: 1rem auto;
@@ -24,6 +28,7 @@ main {
     color: #1d4257;
 }
 
+/* Search Box Styles */
 .search {
     display: flex;
     margin-bottom: 1rem;
@@ -53,11 +58,13 @@ main {
     background-color: #145175;
 }
 
+/* Movies Container Styles */
 #movies-container {
     display: flex;
     flex-wrap: wrap;
 }
 
+/* Individual Movie Styles */
 .movie {
     width: 300px;
     margin: 0.5rem;
@@ -69,10 +76,13 @@ main {
     border-radius: 20px;
 }
 
-.movie img:hover, .similar-movie img:hover {
+/* Movie Image Hover Effect */
+.movie img:hover,
+.similar-movie img:hover {
     transform: scale(1.05);
 }
 
+/* Overlay Styles */
 .overlay {
     display: none;
     position: fixed;
@@ -129,6 +139,7 @@ main {
     cursor: pointer;
 }
 
+/* Details Container Styles */
 .details-container {
     display: flex;
     justify-content: space-between;
@@ -137,10 +148,12 @@ main {
     margin-bottom: 20px;
 }
 
+/* Movie Details Styles */
 .movie-details {
     flex: 1;
 }
 
+/* Movie Poster Styles */
 .movie-poster {
     flex: 1;
     max-width: 250px;
@@ -152,6 +165,7 @@ main {
     border-radius: 10px;
 }
 
+/* Similar Movies Styles */
 .similar-movies {
     margin-top: 20px;
 }
@@ -174,6 +188,7 @@ main {
     border-radius: 5px;
 }
 
+/* Page Navigation Styles */
 .page-navigation {
     display: flex;
     justify-content: space-between;
@@ -196,6 +211,7 @@ main {
     background-color: #145175;
 }
 
+/* Responsive Styles for Small Screens */
 @media (max-width: 600px) {
     .search input {
         margin-bottom: 0.5rem;
