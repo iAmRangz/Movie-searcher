@@ -100,31 +100,34 @@ const displayDetails = async (movie) => {
             axios.get(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}&language=en-US`)
         ]);
 
+        // Extracting data from the API responses
         const movieDetails = movieResponse.data;
         const credits = creditsResponse.data;
         const similarMovies = similarResponse.data.results;
 
-        // Creating and populating the overlay
+        // Creating and setting up the overlay
         const overlay = document.getElementById('overlay');
         overlay.innerHTML = ''; // Clear previous details
         overlay.classList.add('active');
 
+        // Creating a div to hold movie details
         const detailsDiv = document.createElement('div');
         detailsDiv.classList.add('overlay-content');
 
+        // Creating a close button for the overlay
         const closeButton = document.createElement('button');
         closeButton.textContent = 'Close';
         closeButton.addEventListener('click', () => {
             overlay.classList.remove('active');
         });
 
-        // Extracting director, genres, and cast information
+        // Extracting specific details for display
         const director = credits.crew.find(member => member.job === 'Director');
         const directorName = director ? director.name : 'N/A';
         const genres = movieDetails.genres.map(genre => genre.name).join(', ');
         const cast = credits.cast.slice(0, 5).map(actor => actor.name).join(', ');
 
-        // Populating the details section of the overlay
+        // Populating the details section of the overlay with fetched data
         detailsDiv.innerHTML = `
             <h2>${movieDetails.title}</h2>
             <div class="details-container">
@@ -141,22 +144,26 @@ const displayDetails = async (movie) => {
             </div>
         `;
 
+        // Appending the close button to the details div
         detailsDiv.appendChild(closeButton);
 
         // Creating and appending the similar movies section to the overlay
         const similarMoviesDiv = createSimilarMoviesDiv(similarMovies);
         detailsDiv.appendChild(similarMoviesDiv);
 
+        // Appending the details div to the overlay
         overlay.appendChild(detailsDiv);
 
+        // Attaching click event listeners for similar movies
         attachSimilarMoviesClickListener(similarMovies);
 
     } catch (error) {
         console.error('Error displaying details:', error);
     } finally {
-        displayMoviePoster(movieId);
+        displayMoviePoster(movieId); // Displaying the movie poster after attempting to fetch details
     }
 };
+
 
 // Function to create the HTML structure for similar movies section
 const createSimilarMoviesDiv = (similarMovies) => {
